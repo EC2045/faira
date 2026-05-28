@@ -13,18 +13,16 @@
   src: url('https://ec2045.github.io/2045font/2045alphabet.otf') format('opentype');
 }
 
-CSS
 :root {
-  /* Light mode colors */
-  --bg: #ffffff;
-  --bg2: #f4f4f9;
-  --bg3: #e8e8f0;
-  --accent: #5a9ab0;        /* Adjusted for better contrast on white */
-  --accent2: #d69e5c;
-  --accent3: #9b5bb0;
-  --text: #1a1a20;          /* Dark gray for better readability */
-  --text-muted: #666677;
-  --border: rgba(90, 154, 176, 0.2);
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #18181f;
+  --accent: #7ec8e3;
+  --accent2: #e3b87e;
+  --accent3: #b87ee3;
+  --text: #e8e8f0;
+  --text-muted: #888899;
+  --border: rgba(126,200,227,0.18);
   --serif: '2045alphabet', 'Noto Sans JP', sans-serif;
   --body: 'Noto Sans JP', sans-serif;
 }
@@ -45,7 +43,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 0;
 }
@@ -461,6 +459,31 @@ tr:hover td { background: rgba(126,200,227,0.03); }
   font-family: var(--serif);
   margin-bottom: 0.2rem;
 }
+.vi-render {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 70px;
+  margin: 0.4rem 0 0.2rem;
+  transform: scale(0.72);
+  transform-origin: left center;
+}
+.ex-faarao-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  font-family: var(--serif);
+  color: var(--text-muted);
+  margin-top: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+.ex-faarao-render {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 80px;
+  transform: scale(0.78);
+  transform-origin: left center;
+}
 
 /* ─── フッター ─── */
 footer {
@@ -553,7 +576,7 @@ footer .footer-logo {
   <a href="#phonology">音韻</a>
   <a href="#grammar">文法</a>
   <a href="#script">文字</a>
-  <a href="./vocabulary.html">語彙</a>
+  <a href="#vocab">語彙</a>
 </nav>
 
 <!-- ─── ヒーロー ─── -->
@@ -564,11 +587,8 @@ footer .footer-logo {
 
   <div class="hero-label">THE LANGUAGE OF BREATH</div>
   <h1>Faarai</h1>
+  <div id="hero-faarao-render" style="position:relative;z-index:1;margin:1rem 0;min-height:130px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp 1s ease 0.6s forwards;"></div>
   <p class="hero-sub">吐く息と吸う息を文法機能として持つ、世界で唯一の人工言語。理論上、息継ぎなしで無限に会話できる。</p>
-
-  <div class="hero-faarao">
-    <div class="faarao" style="font-size:0;">Faarai</div>
-  </div>
 
   <div class="scroll-hint">SCROLL</div>
 </header>
@@ -608,7 +628,7 @@ footer .footer-logo {
     <div class="card">
       <span class="card-icon">aa</span>
       <h3>母音の長音化</h3>
-      <p>母音が連続するとき長音として発音。<span class="faairao">Ta aga</span> → 「ターガー」</p>
+      <p>母音が連続するとき長音として発音。Ta aga → 「ターガー」</p>
     </div>
   </div>
 
@@ -616,13 +636,17 @@ footer .footer-logo {
 
   <div class="example-block reveal" data-lang="EXAMPLE">
     <div class="example-label">PRONUNCIATION</div>
-    <div class="example-text" id="faairao">Ritsutö āgā.</div>
+    <div class="example-text">Ritsutö āgā.</div>
     <div class="example-trans">← 「りつと アーガー」名前の最後はキカンホで吸い込む</div>
+    <div class="ex-faarao-label">FAARAO SCRIPT</div>
+    <div id="ex-phon-1" class="ex-faarao-render"></div>
   </div>
   <div class="example-block reveal" data-lang="EXAMPLE">
     <div class="example-label">KIKANHO IN ACTION</div>
-    <div class="example-text">Chisa →  hïsa</div>
+    <div class="example-text">Chini</div>
     <div class="example-trans">← c が消音、直後の i がキカンホに（息を吸いながら「ヒ」）</div>
+    <div class="ex-faarao-label">FAARAO SCRIPT</div>
+    <div id="ex-phon-2" class="ex-faarao-render"></div>
   </div>
 </section>
 
@@ -646,8 +670,8 @@ footer .footer-logo {
         </tr>
       </thead>
       <tbody>
-        <tr><td class="td-faarao">私</td><td id="faairao">-a</td><td id="faairao">-as</td><td id="faairao">-na</td><td id="faairao">Ta / Ri</td><td id="faairao">-wa</td><td id="faairao">mi</td></tr>
-        <tr><td class="td-faarao">あなた</td><td id="faairao">-i</td><td>-is</td><td>-ka</td><td>Na / Tu</td><td>-yu</td><td>yua</td></tr>
+        <tr><td class="td-faarao">私</td><td>-a</td><td>-as</td><td>-na</td><td>Ta / Ri</td><td>-wa</td><td>mi</td></tr>
+        <tr><td class="td-faarao">あなた</td><td>-i</td><td>-is</td><td>-ka</td><td>Na / Tu</td><td>-yu</td><td>yua</td></tr>
         <tr><td class="td-faarao">彼/彼女</td><td>-u</td><td>-us</td><td>-zu</td><td>Ka / To</td><td>-e</td><td>ha</td></tr>
         <tr><td class="td-faarao">名詞(生物)</td><td>za</td><td>za</td><td>ki</td><td>zu / zo</td><td>ze</td><td>s</td></tr>
         <tr><td class="td-faarao">無生物/それ</td><td colspan="6">itto（全活用）</td><td>m</td></tr>
@@ -661,35 +685,47 @@ footer .footer-logo {
     <div>
       <div class="example-block" data-lang="SOV">
         <div class="example-label">自己紹介（名前）</div>
-        <div class="example-text" id="faairao">mi name Ritsuto agitto.</div>
+        <div class="example-text">mi name Ritsuto agitto.</div>
         <div class="example-trans">私の名前はりつとです</div>
+        <div class="ex-faarao-label">FAARAO SCRIPT</div>
+        <div id="ex-gram-1" class="ex-faarao-render"></div>
       </div>
       <div class="example-block" data-lang="SV">
         <div class="example-label">省略文</div>
-        <div class="example-text" id="faairao">Ritsuto aga.</div>
+        <div class="example-text">Ritsuto aga.</div>
         <div class="example-trans">私はりつとです（主語省略形）</div>
+        <div class="ex-faarao-label">FAARAO SCRIPT</div>
+        <div id="ex-gram-2" class="ex-faarao-render"></div>
       </div>
       <div class="example-block" data-lang="EMPHASIS">
         <div class="example-label">強調文</div>
-        <div class="example-text" id="faairao">Ta Ritsuto aga.</div>
+        <div class="example-text">Ta Ritsuto aga.</div>
         <div class="example-trans">私こそがりつとだ</div>
+        <div class="ex-faarao-label">FAARAO SCRIPT</div>
+        <div id="ex-gram-3" class="ex-faarao-render"></div>
       </div>
     </div>
     <div>
       <div class="example-block" data-lang="QUESTION">
         <div class="example-label">疑問文（文頭 ‽）</div>
-        <div class="example-text" id="faairao">‽Syunyu agi?</div>
+        <div class="example-text">‽Syunyu agi?</div>
         <div class="example-trans">あなたは駿有ですか？</div>
+        <div class="ex-faarao-label">FAARAO SCRIPT</div>
+        <div id="ex-gram-4" class="ex-faarao-render"></div>
       </div>
       <div class="example-block" data-lang="REASON">
         <div class="example-label">理由節（nazi）</div>
-        <div class="example-text" "faairao">taira aga nazi, naki aga.</div>
+        <div class="example-text">taira aga nazi, naki aga.</div>
         <div class="example-trans">疲れたから眠い</div>
+        <div class="ex-faarao-label">FAARAO SCRIPT</div>
+        <div id="ex-gram-5" class="ex-faarao-render"></div>
       </div>
       <div class="example-block" data-lang="NEGATION">
         <div class="example-label">否定（nola）</div>
-        <div class="example-text" id="faairao">Ken nola aga.</div>
+        <div class="example-text">Ken nola aga.</div>
         <div class="example-trans">私はケンではない</div>
+        <div class="ex-faarao-label">FAARAO SCRIPT</div>
+        <div id="ex-gram-6" class="ex-faarao-render"></div>
       </div>
     </div>
   </div>
@@ -698,33 +734,33 @@ footer .footer-logo {
 
   <div class="reveal">
     <div class="conj-row">
-      <div class="conj-pill"><strong id="faairao">;</strong><span>and / so</span></div>
-      <div class="conj-pill"><strong id="faairao">nazi</strong><span>なぜなら</span></div>
-      <div class="conj-pill"><strong id="faairao">Gä</strong><span>but / however</span></div>
-      <div class="conj-pill"><strong id="faairao">A ï B</strong><span>A と B</span></div>
-      <div class="conj-pill"><strong id="faairao">A o B</strong><span>A または B</span></div>
-      <div class="conj-pill"><strong id="faairao">‽ ¡ ¿</strong><span>疑問・感嘆の符号</span></div>
-      <div class="conj-pill"><strong id="faairao">—</strong><span>例示（前を伸ばす）</span></div>
-      <div class="conj-pill"><strong id="faairao">nola</strong><span>否定</span></div>
-      <div class="conj-pill"><strong id="faairao">ha</strong><span>オープン疑問詞</span></div>
+      <div class="conj-pill"><strong>;</strong><span>and / so</span></div>
+      <div class="conj-pill"><strong>nazi</strong><span>なぜなら</span></div>
+      <div class="conj-pill"><strong>Gä</strong><span>but / however</span></div>
+      <div class="conj-pill"><strong>A ï B</strong><span>A と B</span></div>
+      <div class="conj-pill"><strong>A o B</strong><span>A または B</span></div>
+      <div class="conj-pill"><strong>‽ ¡ ¿</strong><span>疑問・感嘆の符号</span></div>
+      <div class="conj-pill"><strong>—</strong><span>例示（前を伸ばす）</span></div>
+      <div class="conj-pill"><strong>nola</strong><span>否定</span></div>
+      <div class="conj-pill"><strong>ha</strong><span>オープン疑問詞</span></div>
     </div>
   </div>
 
   <div class="divider reveal">NUMBERS</div>
 
   <div class="number-grid reveal">
-    <div class="number-item"><div class="number-val">1</div><div class="number-read" id="faairao">Bi</div></div>
-    <div class="number-item"><div class="number-val">2</div><div class="number-read" id="faairao">Ni</div></div>
-    <div class="number-item"><div class="number-val">3</div><div class="number-read" id="faairao">Tai</div></div>
-    <div class="number-item"><div class="number-val">4</div><div class="number-read" id="faairao">Fu</div></div>
-    <div class="number-item"><div class="number-val">5</div><div class="number-read" id="faairao">Ichi</div></div>
-    <div class="number-item"><div class="number-val">6</div><div class="number-read" id="faairao">Mu</div></div>
-    <div class="number-item"><div class="number-val">7</div><div class="number-read" id="faairao">Se</div></div>
-    <div class="number-item"><div class="number-val">8</div><div class="number-read" id="faairao">Zi</div></div>
-    <div class="number-item"><div class="number-val">9</div><div class="number-read" id="faairao">Ka</div></div>
-    <div class="number-item"><div class="number-val">10</div><div class="number-read" id="faairao">Zyuu</div></div>
-    <div class="number-item"><div class="number-val">18</div><div class="number-read" id="faairao">Zyuu Zi</div></div>
-    <div class="number-item"><div class="number-val">53</div><div class="number-read" id="faairao">Ichi Tai</div></div>
+    <div class="number-item"><div class="number-val">1</div><div class="number-read">Bi</div></div>
+    <div class="number-item"><div class="number-val">2</div><div class="number-read">Ni</div></div>
+    <div class="number-item"><div class="number-val">3</div><div class="number-read">Tai</div></div>
+    <div class="number-item"><div class="number-val">4</div><div class="number-read">Fu</div></div>
+    <div class="number-item"><div class="number-val">5</div><div class="number-read">Ichi</div></div>
+    <div class="number-item"><div class="number-val">6</div><div class="number-read">Mu</div></div>
+    <div class="number-item"><div class="number-val">7</div><div class="number-read">Se</div></div>
+    <div class="number-item"><div class="number-val">8</div><div class="number-read">Zi</div></div>
+    <div class="number-item"><div class="number-val">9</div><div class="number-read">Ka</div></div>
+    <div class="number-item"><div class="number-val">10</div><div class="number-read">Zyuu</div></div>
+    <div class="number-item"><div class="number-val">18</div><div class="number-read">Zyuu Zi</div></div>
+    <div class="number-item"><div class="number-val">53</div><div class="number-read">Ichi Tai</div></div>
   </div>
 </section>
 
@@ -781,34 +817,50 @@ footer .footer-logo {
 
   <div class="divider reveal">BASIC EXPRESSIONS</div>
   <div class="vocab-grid reveal">
-    <div class="vocab-item"><div class="vocab-cat">GREETING</div><div class="vocab-faarao" id="faairao">Chini</div><div class="vocab-meaning">こんにちは（発音: hïni）</div></div>
-    <div class="vocab-item"><div class="vocab-cat">GREETING</div><div class="vocab-faarao" id="faairao">Daka</div><div class="vocab-meaning">ありがとう</div></div>
-    <div class="vocab-item"><div class="vocab-cat">GREETING</div><div class="vocab-faarao" id="faairao">Seba</div><div class="vocab-meaning">さようなら</div></div>
-    <div class="vocab-item"><div class="vocab-cat">EXPRESSION</div><div class="vocab-faarao" id="faairao">Äh!</div><div class="vocab-meaning">驚き・感動</div></div>
-    <div class="vocab-item"><div class="vocab-cat">EXPRESSION</div><div class="vocab-faarao" id="faairao">Appi-basday</div><div class="vocab-meaning">誕生日おめでとう</div></div>
+    <div class="vocab-item"><div class="vocab-cat">GREETING</div><div class="vocab-faarao">Chini</div><div id="vi-Chini" class="vi-render"></div><div class="vocab-meaning">こんにちは（発音: hïni）</div></div>
+    <div class="vocab-item"><div class="vocab-cat">GREETING</div><div class="vocab-faarao">Daka</div><div id="vi-Daka" class="vi-render"></div><div class="vocab-meaning">ありがとう</div></div>
+    <div class="vocab-item"><div class="vocab-cat">GREETING</div><div class="vocab-faarao">Seba</div><div id="vi-Seba" class="vi-render"></div><div class="vocab-meaning">さようなら</div></div>
+    <div class="vocab-item"><div class="vocab-cat">EXPRESSION</div><div class="vocab-faarao">Äh!</div><div id="vi-Ah" class="vi-render"></div><div class="vocab-meaning">驚き・感動</div></div>
+    <div class="vocab-item"><div class="vocab-cat">EXPRESSION</div><div class="vocab-faarao">Appi-basday</div><div id="vi-Appibasday" class="vi-render"></div><div class="vocab-meaning">誕生日おめでとう</div></div>
   </div>
 
   <div class="divider reveal">CORE VOCABULARY</div>
   <div class="vocab-grid reveal">
-    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao" id="faairao">ag</div><div class="vocab-meaning">〜である／する</div></div>
-    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao" id="faairao">as</div><div class="vocab-meaning">知る</div></div>
-    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao" id="faairao">eat</div><div class="vocab-meaning">食べる</div></div>
-    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao" id="faairao">nem</div><div class="vocab-meaning">ねる</div></div>
-    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao" id="faairao">sil</div><div class="vocab-meaning">見る</div></div>
-    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao" id="faairao">kros</div><div class="vocab-meaning">超える</div></div>
-    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao" id="faairao">Sekai</div><div class="vocab-meaning">正解</div></div>
-    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao" id="faairao">Furai</div><div class="vocab-meaning">未来</div></div>
-    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao" id="faairao">Niga</div><div class="vocab-meaning">人間</div></div>
-    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao" id="faairao">Ogara</div><div class="vocab-meaning">大喜利</div></div>
-    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao" id="faairao">Sinki</div><div class="vocab-meaning">思考</div></div>
-    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao" id="faairao">Logis</div><div class="vocab-meaning">論理</div></div>
+    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao">ag</div><div id="vi-ag" class="vi-render"></div><div class="vocab-meaning">〜である／する</div></div>
+    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao">as</div><div id="vi-as" class="vi-render"></div><div class="vocab-meaning">知る</div></div>
+    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao">eat</div><div id="vi-eat" class="vi-render"></div><div class="vocab-meaning">食べる</div></div>
+    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao">nem</div><div id="vi-nem" class="vi-render"></div><div class="vocab-meaning">ねる</div></div>
+    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao">sil</div><div id="vi-sil" class="vi-render"></div><div class="vocab-meaning">見る</div></div>
+    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao">kros</div><div id="vi-kros" class="vi-render"></div><div class="vocab-meaning">超える</div></div>
+    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao">Sekai</div><div id="vi-Sekai" class="vi-render"></div><div class="vocab-meaning">正解</div></div>
+    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao">Furai</div><div id="vi-Furai" class="vi-render"></div><div class="vocab-meaning">未来</div></div>
+    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao">Niga</div><div id="vi-Niga" class="vi-render"></div><div class="vocab-meaning">人間</div></div>
+    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao">Ogara</div><div id="vi-Ogara" class="vi-render"></div><div class="vocab-meaning">大喜利</div></div>
+    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao">Sinki</div><div id="vi-Sinki" class="vi-render"></div><div class="vocab-meaning">思考</div></div>
+    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao">Logis</div><div id="vi-Logis" class="vi-render"></div><div class="vocab-meaning">論理</div></div>
   </div>
 
+  <div class="divider reveal">IT TERMS</div>
+  <div class="vocab-grid reveal">
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">Atofian-Interu</div><div id="vi-AtofianInteru" class="vi-render"></div><div class="vocab-meaning">AI（人工知能）</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">Taagzabi</div><div id="vi-Taagzabi" class="vi-render"></div><div class="vocab-meaning">バイナリ</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">Kodu</div><div id="vi-Kodu" class="vi-render"></div><div class="vocab-meaning">コード</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">Varis</div><div id="vi-Varis" class="vi-render"></div><div class="vocab-meaning">変数</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">Glic</div><div id="vi-Glic" class="vi-render"></div><div class="vocab-meaning">グリッチ</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">Prose</div><div id="vi-Prose" class="vi-render"></div><div class="vocab-meaning">処理</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">MKP</div><div id="vi-MKP" class="vi-render"></div><div class="vocab-meaning">CPU</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">BKP</div><div id="vi-BKP" class="vi-render"></div><div class="vocab-meaning">GPU</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">mitaki</div><div id="vi-mitaki" class="vi-render"></div><div class="vocab-meaning">PC</div></div>
+  </div>
 
   <div class="divider reveal">SCIENCE</div>
   <div class="vocab-grid reveal">
-    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao" id="faairao">Kai</div><div class="vocab-meaning">原子</div></div>
-    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao" id="faairao">Mikai</div><div class="vocab-meaning" >水素 (H)</div><
+    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao">Kai</div><div id="vi-Kai" class="vi-render"></div><div class="vocab-meaning">原子</div></div>
+    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao">Mikai</div><div id="vi-Mikai" class="vi-render"></div><div class="vocab-meaning">水素 (H)</div></div>
+    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao">Lasai</div><div id="vi-Lasai" class="vi-render"></div><div class="vocab-meaning">ヘリウム (He)</div></div>
+    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao">Sekia</div><div id="vi-Sekia" class="vi-render"></div><div class="vocab-meaning">炭素 (C)</div></div>
+    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao">Soheia</div><div id="vi-Soheia" class="vi-render"></div><div class="vocab-meaning">窒素 (N)</div></div>
+    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao">Senkia</div><div id="vi-Senkia" class="vi-render"></div><div class="vocab-meaning">酸素 (O)</div></div>
   </div>
 </section>
 
@@ -821,24 +873,55 @@ footer .footer-logo {
 <script src="https://ec2045.github.io/Faairao/index.js"></script>
 <script>
 let engine;
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => {
-    if (typeof FaaraoEngine !== 'undefined') {
-      engine = new FaaraoEngine();
-      renderFaarao('Faarai');
-      engine.render('Faarai', 'hero-faarao-render');
-    }
-  }, 1000);
+
+// FaaraoEngineが読み込まれたら全箇所をレンダリング
+window.addEventListener('load', () => {
+  if (typeof FaaraoEngine === 'undefined') return;
+  engine = new FaaraoEngine();
+
+  // ─── ヒーロー ───
+  engine.render('Faarai', 'hero-faarao-render');
+
+  // ─── 音韻例文 ───
+  engine.render('Ritsuto aga', 'ex-phon-1');
+  engine.render('Chini', 'ex-phon-2');
+
+  // ─── 文法例文 ───
+  engine.render('mi name Ritsuto agitto', 'ex-gram-1');
+  engine.render('Ritsuto aga', 'ex-gram-2');
+  engine.render('Ta Ritsuto aga', 'ex-gram-3');
+  engine.render('Syunyu agi', 'ex-gram-4');
+  engine.render('taira aga nazi naki aga', 'ex-gram-5');
+  engine.render('Ken nola aga', 'ex-gram-6');
+
+  // ─── 語彙サンプル ───
+  const viMap = {
+    'vi-Chini':'Chini', 'vi-Daka':'Daka', 'vi-Seba':'Seba',
+    'vi-Ah':'Ah', 'vi-Appibasday':'Appibasday',
+    'vi-ag':'ag', 'vi-as':'as', 'vi-eat':'eat', 'vi-nem':'nem',
+    'vi-sil':'sil', 'vi-kros':'kros',
+    'vi-Sekai':'Sekai', 'vi-Furai':'Furai', 'vi-Niga':'Niga',
+    'vi-Ogara':'Ogara', 'vi-Sinki':'Sinki', 'vi-Logis':'Logis',
+    'vi-AtofianInteru':'Atofian Interu', 'vi-Taagzabi':'Taagzabi',
+    'vi-Kodu':'Kodu', 'vi-Varis':'Varis', 'vi-Glic':'Glic',
+    'vi-Prose':'Prose', 'vi-MKP':'MKP', 'vi-BKP':'BKP', 'vi-mitaki':'mitaki',
+    'vi-Kai':'Kai', 'vi-Mikai':'Mikai', 'vi-Lasai':'Lasai',
+    'vi-Sekia':'Sekia', 'vi-Soheia':'Soheia', 'vi-Senkia':'Senkia',
+  };
+  for (const [id, text] of Object.entries(viMap)) {
+    if (document.getElementById(id)) engine.render(text, id);
+  }
+
+  // ─── デモエリア初期表示 ───
+  renderFaarao('Faarai');
 });
 
 function renderFaarao(text) {
   const el = document.getElementById('faarao-output');
-  if (!el) return;
+  if (!el || !engine) return;
   el.innerHTML = '';
   document.getElementById('faarao-text-input').value = text;
-  if (engine) {
-    engine.render(text, 'faarao-output');
-  }
+  engine.render(text, 'faarao-output');
 }
 
 function renderFaaraoFromInput() {
@@ -850,25 +933,12 @@ document.getElementById('faarao-text-input').addEventListener('keydown', (e) => 
   if (e.key === 'Enter') renderFaaraoFromInput();
 });
 
-// ヒーローのfaarao文字
-window.addEventListener('load', () => {
-  if (typeof FaaraoEngine !== 'undefined') {
-    const heroEl = document.querySelector('.hero-faarao .faarao');
-    if (heroEl) {
-      heroEl.id = 'hero-faarao-render';
-      engine = engine || new FaaraoEngine();
-      engine.render('Faarai', 'hero-faarao-render');
-    }
-  }
-});
-
 // スクロールリビール
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) e.target.classList.add('visible');
   });
 }, { threshold: 0.1 });
-
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 </body>
