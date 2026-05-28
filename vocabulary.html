@@ -14,18 +14,18 @@
 }
 
 :root {
-  --bg:      #09090e;
-  --bg2:     #10101a;
-  --bg3:     #16161f;
-  --bg4:     #1c1c28;
-  --accent:  #7ec8e3;
-  --accent2: #e3b87e;
-  --accent3: #b87ee3;
-  --green:   #7ee3b0;
-  --red:     #e37e7e;
-  --text:    #e8e8f2;
-  --muted:   #7a7a92;
-  --border:  rgba(126,200,227,0.14);
+  --bg:      #f4f4f8;
+  --bg2:     #ffffff;
+  --bg3:     #eaeaf0;
+  --bg4:     #e2e2ec;
+  --accent:  #3a8fb5;
+  --accent2: #b5763a;
+  --accent3: #7c3ab5;
+  --green:   #2e9e6e;
+  --red:     #b53a3a;
+  --text:    #1a1a2e;
+  --muted:   #6b6b88;
+  --border:  rgba(58,143,181,0.18);
   --serif:   '2045alphabet','Noto Sans JP',sans-serif;
   --body:    'Noto Sans JP',sans-serif;
 }
@@ -45,7 +45,7 @@ nav {
   position: sticky;
   top: 0;
   z-index: 200;
-  background: rgba(9,9,14,0.88);
+  background: rgba(244,244,248,0.88);
   backdrop-filter: blur(16px);
   border-bottom: 0.5px solid var(--border);
   display: flex;
@@ -165,7 +165,7 @@ main {
   outline: none;
   transition: border-color 0.2s;
 }
-#search:focus { border-color: rgba(126,200,227,0.45); }
+#search:focus { border-color: rgba(58,143,181,0.5); }
 #search::placeholder { color: var(--muted); }
 .search-count {
   position: absolute;
@@ -198,7 +198,7 @@ main {
   transition: all 0.15s;
 }
 .chip:hover { color: var(--text); border-color: rgba(126,200,227,0.35); }
-.chip.active { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+.chip.active { color: #fff; background: var(--accent); border-color: var(--accent); }
 
 /* ─── SECTION HEADER ─── */
 .sec-head {
@@ -250,7 +250,7 @@ main {
   transition: opacity 0.2s;
 }
 .word-card:hover {
-  border-color: rgba(126,200,227,0.3);
+  border-color: rgba(58,143,181,0.35);
   background: var(--bg3);
   transform: translateY(-2px);
 }
@@ -314,7 +314,7 @@ main {
 }
 .modal {
   background: var(--bg2);
-  border: 0.5px solid rgba(126,200,227,0.3);
+  border: 0.5px solid rgba(58,143,181,0.3);
   border-radius: 16px;
   padding: 2rem;
   width: 100%;
@@ -394,16 +394,16 @@ main {
 .empty p { font-size: 0.85rem; }
 
 /* ─── COLOR MAP ─── */
-.cat-noun     { --card-accent: #7ec8e3; color: #7ec8e3; }
-.cat-verb     { --card-accent: #b87ee3; color: #b87ee3; }
-.cat-adj      { --card-accent: #e3b87e; color: #e3b87e; }
-.cat-greeting { --card-accent: #7ee3b0; color: #7ee3b0; }
-.cat-science  { --card-accent: #7ea8e3; color: #7ea8e3; }
-.cat-it       { --card-accent: #e37ea8; color: #e37ea8; }
-.cat-food     { --card-accent: #e3c87e; color: #e3c87e; }
-.cat-creature { --card-accent: #a8e37e; color: #a8e37e; }
-.cat-number   { --card-accent: #7ee3c8; color: #7ee3c8; }
-.cat-color    { --card-accent: #e37e7e; color: #e37e7e; }
+.cat-noun     { --card-accent: #3a8fb5; color: #3a8fb5; }
+.cat-verb     { --card-accent: #7c3ab5; color: #7c3ab5; }
+.cat-adj      { --card-accent: #b5763a; color: #b5763a; }
+.cat-greeting { --card-accent: #2e9e6e; color: #2e9e6e; }
+.cat-science  { --card-accent: #3a6ab5; color: #3a6ab5; }
+.cat-it       { --card-accent: #b53a70; color: #b53a70; }
+.cat-food     { --card-accent: #b59a3a; color: #b59a3a; }
+.cat-creature { --card-accent: #5e9e3a; color: #5e9e3a; }
+.cat-number   { --card-accent: #3ab590; color: #3ab590; }
+.cat-color    { --card-accent: #b53a3a; color: #b53a3a; }
 
 /* ─── RESPONSIVE ─── */
 @media (max-width: 680px) {
