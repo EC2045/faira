@@ -778,7 +778,7 @@ function render() {
       card.className = `word-card cat-${cat}`;
       card.innerHTML = `
         <div class="wc-pos cat-${cat}">${w.pos}</div>
-        <div class="wc-faarao">${w.w}</div>
+        <div class="wc-faarao" id="faairao">${w.w}</div>
         <div class="wc-meaning">${w.meaning}</div>
         ${w.pron ? `<div class="wc-pron">${w.pron}</div>` : ''}
       `;
