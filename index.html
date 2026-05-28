@@ -621,7 +621,7 @@ footer .footer-logo {
   </div>
   <div class="example-block reveal" data-lang="EXAMPLE">
     <div class="example-label">KIKANHO IN ACTION</div>
-    <div class="example-text">Chini  →  hïni</div>
+    <div class="example-text">Chisa →  hïsa</div>
     <div class="example-trans">← c が消音、直後の i がキカンホに（息を吸いながら「ヒ」）</div>
   </div>
 </section>
@@ -826,8 +826,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof FaaraoEngine !== 'undefined') {
       engine = new FaaraoEngine();
       renderFaarao('Faarai');
+      engine.render('Faarai', 'hero-faarao-render');
     }
-  }, 300);
+  }, 1000);
 });
 
 function renderFaarao(text) {
