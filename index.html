@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faarai — The Language of Breath</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+@font-face {
+  font-family: '2045alphabet';
+  src: url('https://ec2045.github.io/2045font/2045alphabet.otf') format('opentype');
+}
+
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #18181f;
+  --accent: #7ec8e3;
+  --accent2: #e3b87e;
+  --accent3: #b87ee3;
+  --text: #e8e8f0;
+  --text-muted: #888899;
+  --border: rgba(126,200,227,0.18);
+  --serif: '2045alphabet', 'Noto Sans JP', sans-serif;
+  --body: 'Noto Sans JP', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-weight: 300;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+/* ─── ノイズオーバーレイ ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── ヘッダー ─── */
+header {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  overflow: hidden;
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.18;
+  animation: pulse 8s ease-in-out infinite alternate;
+}
+.orb1 { width: 500px; height: 500px; background: var(--accent3); top: -100px; left: -100px; }
+.orb2 { width: 400px; height: 400px; background: var(--accent); bottom: -100px; right: -50px; animation-delay: -4s; }
+.orb3 { width: 300px; height: 300px; background: var(--accent2); top: 40%; left: 40%; animation-delay: -2s; }
+
+@keyframes pulse {
+  from { transform: scale(1) translate(0,0); }
+  to   { transform: scale(1.15) translate(20px, -20px); }
+}
+
+.hero-label {
+  font-family: var(--serif);
+  font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+  letter-spacing: 0.35em;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.2s forwards;
+}
+
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 12vw, 9rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(135deg, var(--text) 30%, var(--accent) 70%, var(--accent3) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.4s forwards;
+}
+
+.hero-sub {
+  margin-top: 1.5rem;
+  font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+  color: var(--text-muted);
+  max-width: 480px;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.7s forwards;
+}
+
+.hero-faarao {
+  margin-top: 2.5rem;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 1s ease 1s forwards;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  z-index: 1;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+.scroll-hint::after {
+  content: '';
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── ナビ ─── */
+nav {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  gap: 1.5rem;
+  background: rgba(10,10,15,0.7);
+  backdrop-filter: blur(12px);
+  border: 0.5px solid var(--border);
+  border-radius: 999px;
+  padding: 0.5rem 1.5rem;
+}
+nav a {
+  font-family: var(--serif);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+nav a:hover { color: var(--accent); }
+
+/* ─── セクション共通 ─── */
+section {
+  position: relative;
+  padding: 6rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+section + section::before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--border), transparent);
+  margin: 0 auto;
+  position: absolute;
+  top: 0;
+  left: 50%;
+}
+
+.section-tag {
+  font-family: var(--serif);
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, var(--text) 60%, var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h3 {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.05em;
+}
+
+p { color: var(--text-muted); font-size: 0.95rem; max-width: 680px; }
+p + p { margin-top: 0.8rem; }
+
+/* ─── グリッド ─── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.card {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  padding: 1.8rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.card:hover {
+  border-color: rgba(126,200,227,0.4);
+  transform: translateY(-3px);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(126,200,227,0.05), transparent 60%);
+  pointer-events: none;
+}
+
+.card-icon {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* ─── コードブロック風 ─── */
+.example-block {
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.8rem;
+  margin: 1.2rem 0;
+  position: relative;
+}
+.example-block::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: -0.6em;
+  left: 1.2rem;
+  background: var(--bg3);
+  padding: 0 0.4em;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  font-family: var(--serif);
+}
+.example-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5rem;
+  font-family: var(--serif);
+}
+.example-text {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--text);
+  letter-spacing: 0.05em;
+}
+.example-trans {
+  font-size: 0.8rem;
+  color: var(--accent2);
+  margin-top: 0.4rem;
+}
+
+/* ─── テーブル ─── */
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 2rem;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+th {
+  font-family: var(--serif);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  font-size: 0.7rem;
+  color: var(--accent);
+  border-bottom: 0.5px solid var(--border);
+  padding: 0.6rem 1rem;
+  text-align: left;
+}
+td {
+  padding: 0.6rem 1rem;
+  border-bottom: 0.5px solid rgba(126,200,227,0.06);
+  color: var(--text-muted);
+}
+tr:hover td { background: rgba(126,200,227,0.03); }
+.td-faarao { font-family: var(--serif); color: var(--text); font-size: 1rem; }
+
+/* ─── キカンホ説明ボックス ─── */
+.kikanho-box {
+  background: linear-gradient(135deg, rgba(184,126,227,0.08), rgba(126,200,227,0.06));
+  border: 0.5px solid rgba(184,126,227,0.3);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2.5rem 0;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+.kikanho-symbol {
+  font-family: var(--serif);
+  font-size: 3rem;
+  color: var(--accent3);
+  flex-shrink: 0;
+  line-height: 1;
+}
+.kikanho-content h3 { color: var(--accent3); }
+
+/* ─── ファーラオ文字デモ ─── */
+.faarao-demo-area {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+.faarao-input-row {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.faarao-input-row input {
+  flex: 1;
+  min-width: 200px;
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 0.6rem 1rem;
+  font-family: var(--body);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.faarao-input-row input:focus {
+  border-color: var(--accent);
+}
+.faarao-input-row button {
+  background: rgba(126,200,227,0.12);
+  border: 0.5px solid rgba(126,200,227,0.3);
+  border-radius: 8px;
+  color: var(--accent);
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+  font-family: var(--serif);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  transition: background 0.2s;
+}
+.faarao-input-row button:hover {
+  background: rgba(126,200,227,0.22);
+}
+#faarao-output {
+  min-height: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.faarao-preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+.preset-btn {
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+  font-family: var(--serif);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+}
+.preset-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ─── 語彙テーブル ─── */
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+.vocab-item {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  transition: all 0.2s;
+}
+.vocab-item:hover {
+  border-color: rgba(126,200,227,0.35);
+  background: var(--bg3);
+}
+.vocab-faarao { font-family: var(--serif); font-size: 1rem; color: var(--text); }
+.vocab-meaning { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
+.vocab-cat {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  font-family: var(--serif);
+  margin-bottom: 0.2rem;
+}
+
+/* ─── フッター ─── */
+footer {
+  text-align: center;
+  padding: 4rem 2rem;
+  border-top: 0.5px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+footer .footer-logo {
+  font-family: var(--serif);
+  font-size: 2rem;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* ─── アクセント区切り ─── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 3rem 0;
+  color: var(--text-muted);
+  font-family: var(--serif);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 0.5px;
+  background: var(--border);
+}
+
+/* ─── スクロールアニメ ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── 数字表示 ─── */
+.number-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+.number-item {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem;
+  text-align: center;
+}
+.number-val { font-family: var(--serif); font-size: 1.4rem; color: var(--accent2); }
+.number-read { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+/* ─── コンジャンクション表 ─── */
+.conj-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.conj-pill {
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.8rem;
+}
+.conj-pill strong {
+  font-family: var(--serif);
+  color: var(--accent3);
+  font-weight: 400;
+}
+.conj-pill span { color: var(--text-muted); margin-left: 0.4rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#phonology">音韻</a>
+  <a href="#grammar">文法</a>
+  <a href="#script">文字</a>
+  <a href="#vocab">語彙</a>
+</nav>
+
+<!-- ─── ヒーロー ─── -->
+<header>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-orb orb3"></div>
+
+  <div class="hero-label">THE LANGUAGE OF BREATH</div>
+  <h1>Faarai</h1>
+  <p class="hero-sub">吐く息と吸う息を文法機能として持つ、世界で唯一の人工言語。理論上、息継ぎなしで無限に会話できる。</p>
+
+  <div class="hero-faarao">
+    <div class="faarao" style="font-size:0;">Faarai</div>
+  </div>
+
+  <div class="scroll-hint">SCROLL</div>
+</header>
+
+<!-- ─── 音韻 ─── -->
+<section id="phonology">
+  <span class="section-tag reveal">01 — PHONOLOGY</span>
+  <h2 class="reveal">音韻と表記</h2>
+  <p class="reveal">ファライ語はローマ字読みを基本とするが、いくつかの重要な例外と特殊規則がある。子音 <strong style="color:var(--accent);font-weight:400;">c</strong> は常に黙字、<strong style="color:var(--accent);font-weight:400;">ti</strong> では t が消音となる。</p>
+
+  <div class="kikanho-box reveal">
+    <div class="kikanho-symbol">Ä</div>
+    <div class="kikanho-content">
+      <h3>キカンホ（気管保）システム</h3>
+      <p>ä ë ï ö ü の5母音は息を<em style="color:var(--accent3);">吸い込みながら</em>発音する吸気音（キカンホ）。</p>
+      <p style="margin-top:0.6rem;">目的語の末尾に必ずキカンホが付き、文中で「どこまでが目的語か」を耳で判別できる。c や ti が省略された際もその直後にキカンホが発生し、元の綴りを音声で復元できる。</p>
+      <p style="margin-top:0.6rem;font-size:0.8rem;color:var(--accent3);">※バイナリや歌では省略・不可聴となる場合あり</p>
+    </div>
+  </div>
+
+  <div class="grid-2 reveal">
+    <div class="card">
+      <span class="card-icon">c</span>
+      <h3>c の消音</h3>
+      <p>c は常に発音しない。chi → 「ひ」、Cirku → 「イルク」</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">ti</span>
+      <h3>ti の t 消音</h3>
+      <p>ti の綴りのとき t が消える。直後の母音はキカンホになる。</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">ra</span>
+      <h3>巻き舌 ra</h3>
+      <p>ra となったとき、巻き舌の A として発音する。</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">aa</span>
+      <h3>母音の長音化</h3>
+      <p>母音が連続するとき長音として発音。Ta aga → 「ターガー」</p>
+    </div>
+  </div>
+
+  <div class="divider reveal">SPECIAL SOUNDS</div>
+
+  <div class="example-block reveal" data-lang="EXAMPLE">
+    <div class="example-label">PRONUNCIATION</div>
+    <div class="example-text">Ritsutö āgā.</div>
+    <div class="example-trans">← 「りつと アーガー」名前の最後はキカンホで吸い込む</div>
+  </div>
+  <div class="example-block reveal" data-lang="EXAMPLE">
+    <div class="example-label">KIKANHO IN ACTION</div>
+    <div class="example-text">Chini  →  hïni</div>
+    <div class="example-trans">← c が消音、直後の i がキカンホに（息を吸いながら「ヒ」）</div>
+  </div>
+</section>
+
+<!-- ─── 文法 ─── -->
+<section id="grammar">
+  <span class="section-tag reveal">02 — GRAMMAR</span>
+  <h2 class="reveal">文法構造</h2>
+  <p class="reveal">ファライ語は <strong style="color:var(--accent);font-weight:400;">(S)OV 型</strong>。主語は省略が基本で、動詞語幹に接尾辞として埋め込まれる。</p>
+
+  <div class="table-wrap reveal">
+    <table>
+      <thead>
+        <tr>
+          <th>主語</th>
+          <th>単数</th>
+          <th>複数</th>
+          <th>完了(単複共通)</th>
+          <th>強調単数</th>
+          <th>過去(単複共通)</th>
+          <th>所有格</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-faarao">私</td><td>-a</td><td>-as</td><td>-na</td><td>Ta / Ri</td><td>-wa</td><td>mi</td></tr>
+        <tr><td class="td-faarao">あなた</td><td>-i</td><td>-is</td><td>-ka</td><td>Na / Tu</td><td>-yu</td><td>yua</td></tr>
+        <tr><td class="td-faarao">彼/彼女</td><td>-u</td><td>-us</td><td>-zu</td><td>Ka / To</td><td>-e</td><td>ha</td></tr>
+        <tr><td class="td-faarao">名詞(生物)</td><td>za</td><td>za</td><td>ki</td><td>zu / zo</td><td>ze</td><td>s</td></tr>
+        <tr><td class="td-faarao">無生物/それ</td><td colspan="6">itto（全活用）</td><td>m</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider reveal">SYNTAX EXAMPLES</div>
+
+  <div class="grid-2 reveal">
+    <div>
+      <div class="example-block" data-lang="SOV">
+        <div class="example-label">自己紹介（名前）</div>
+        <div class="example-text">mi name Ritsuto agitto.</div>
+        <div class="example-trans">私の名前はりつとです</div>
+      </div>
+      <div class="example-block" data-lang="SV">
+        <div class="example-label">省略文</div>
+        <div class="example-text">Ritsuto aga.</div>
+        <div class="example-trans">私はりつとです（主語省略形）</div>
+      </div>
+      <div class="example-block" data-lang="EMPHASIS">
+        <div class="example-label">強調文</div>
+        <div class="example-text">Ta Ritsuto aga.</div>
+        <div class="example-trans">私こそがりつとだ</div>
+      </div>
+    </div>
+    <div>
+      <div class="example-block" data-lang="QUESTION">
+        <div class="example-label">疑問文（文頭 ‽）</div>
+        <div class="example-text">‽Syunyu agi?</div>
+        <div class="example-trans">あなたは駿有ですか？</div>
+      </div>
+      <div class="example-block" data-lang="REASON">
+        <div class="example-label">理由節（nazi）</div>
+        <div class="example-text">taira aga nazi, naki aga.</div>
+        <div class="example-trans">疲れたから眠い</div>
+      </div>
+      <div class="example-block" data-lang="NEGATION">
+        <div class="example-label">否定（nola）</div>
+        <div class="example-text">Ken nola aga.</div>
+        <div class="example-trans">私はケンではない</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider reveal">CONJUNCTIONS & PARTICLES</div>
+
+  <div class="reveal">
+    <div class="conj-row">
+      <div class="conj-pill"><strong>;</strong><span>and / so</span></div>
+      <div class="conj-pill"><strong>nazi</strong><span>なぜなら</span></div>
+      <div class="conj-pill"><strong>Gä</strong><span>but / however</span></div>
+      <div class="conj-pill"><strong>A ï B</strong><span>A と B</span></div>
+      <div class="conj-pill"><strong>A o B</strong><span>A または B</span></div>
+      <div class="conj-pill"><strong>‽ ¡ ¿</strong><span>疑問・感嘆の符号</span></div>
+      <div class="conj-pill"><strong>—</strong><span>例示（前を伸ばす）</span></div>
+      <div class="conj-pill"><strong>nola</strong><span>否定</span></div>
+      <div class="conj-pill"><strong>ha</strong><span>オープン疑問詞</span></div>
+    </div>
+  </div>
+
+  <div class="divider reveal">NUMBERS</div>
+
+  <div class="number-grid reveal">
+    <div class="number-item"><div class="number-val">1</div><div class="number-read">Bi</div></div>
+    <div class="number-item"><div class="number-val">2</div><div class="number-read">Ni</div></div>
+    <div class="number-item"><div class="number-val">3</div><div class="number-read">Tai</div></div>
+    <div class="number-item"><div class="number-val">4</div><div class="number-read">Fu</div></div>
+    <div class="number-item"><div class="number-val">5</div><div class="number-read">Ichi</div></div>
+    <div class="number-item"><div class="number-val">6</div><div class="number-read">Mu</div></div>
+    <div class="number-item"><div class="number-val">7</div><div class="number-read">Se</div></div>
+    <div class="number-item"><div class="number-val">8</div><div class="number-read">Zi</div></div>
+    <div class="number-item"><div class="number-val">9</div><div class="number-read">Ka</div></div>
+    <div class="number-item"><div class="number-val">10</div><div class="number-read">Zyuu</div></div>
+    <div class="number-item"><div class="number-val">18</div><div class="number-read">Zyuu Zi</div></div>
+    <div class="number-item"><div class="number-val">53</div><div class="number-read">Ichi Tai</div></div>
+  </div>
+</section>
+
+<!-- ─── ファーラオ文字 ─── -->
+<section id="script">
+  <span class="section-tag reveal">03 — FAARAO SCRIPT</span>
+  <h2 class="reveal">ファーラオ文字</h2>
+  <p class="reveal">ファライ語専用の表記体系。音節（最大3音）を1ブロックに収め、左上・右上・下の位置に配置する。目的語末尾のキカンホも視覚的に区別される。</p>
+
+  <div class="faarao-demo-area reveal">
+    <div class="example-label" style="margin-bottom:1rem;">プリセット</div>
+    <div class="faarao-preset-row">
+      <button class="preset-btn" onclick="renderFaarao('Faarai')">Faarai</button>
+      <button class="preset-btn" onclick="renderFaarao('Chini')">Chini</button>
+      <button class="preset-btn" onclick="renderFaarao('Ritsuto aga')">Ritsuto aga</button>
+      <button class="preset-btn" onclick="renderFaarao('Daka')">Daka</button>
+      <button class="preset-btn" onclick="renderFaarao('Atofian Interu')">Atofian Interu</button>
+      <button class="preset-btn" onclick="renderFaarao('Sekai')">Sekai</button>
+    </div>
+    <div class="faarao-input-row">
+      <input type="text" id="faarao-text-input" placeholder="ファライ語テキストを入力…" value="Faarai">
+      <button onclick="renderFaaraoFromInput()">RENDER</button>
+    </div>
+    <div id="faarao-output"></div>
+  </div>
+
+  <div class="divider reveal">SCRIPT RULES</div>
+
+  <div class="grid-2 reveal">
+    <div class="card">
+      <h3>ブロック構成</h3>
+      <p>1ブロック最大3音節。左上（A）→ 右上（D）→ 下中央（S）の順に配置。</p>
+    </div>
+    <div class="card">
+      <h3>ウムラウト（キカンホ）</h3>
+      <p>ä ë ï ö ü はベース母音画像の上に ¨ をオーバーレイして吸気音を表現。</p>
+    </div>
+    <div class="card">
+      <h3>KU接近</h3>
+      <p>K の直後に U が来るとき、U パーツを左にスライドして K に密着させる。</p>
+    </div>
+    <div class="card">
+      <h3>単語間スペース</h3>
+      <p>スペースで単語を区切りワードラッパーで管理。文字幅は自動調整。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 語彙 ─── -->
+<section id="vocab">
+  <span class="section-tag reveal">04 — VOCABULARY</span>
+  <h2 class="reveal">語彙サンプル</h2>
+  <p class="reveal">基本語彙・IT用語・科学用語・食べ物など複数カテゴリにまたがる約100語以上が整備されている。</p>
+
+  <div class="divider reveal">BASIC EXPRESSIONS</div>
+  <div class="vocab-grid reveal">
+    <div class="vocab-item"><div class="vocab-cat">GREETING</div><div class="vocab-faarao">Chini</div><div class="vocab-meaning">こんにちは（発音: hïni）</div></div>
+    <div class="vocab-item"><div class="vocab-cat">GREETING</div><div class="vocab-faarao">Daka</div><div class="vocab-meaning">ありがとう</div></div>
+    <div class="vocab-item"><div class="vocab-cat">GREETING</div><div class="vocab-faarao">Seba</div><div class="vocab-meaning">さようなら</div></div>
+    <div class="vocab-item"><div class="vocab-cat">EXPRESSION</div><div class="vocab-faarao">Äh!</div><div class="vocab-meaning">驚き・感動</div></div>
+    <div class="vocab-item"><div class="vocab-cat">EXPRESSION</div><div class="vocab-faarao">Appi-basday</div><div class="vocab-meaning">誕生日おめでとう</div></div>
+  </div>
+
+  <div class="divider reveal">CORE VOCABULARY</div>
+  <div class="vocab-grid reveal">
+    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao">ag</div><div class="vocab-meaning">〜である／する</div></div>
+    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao">as</div><div class="vocab-meaning">知る</div></div>
+    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao">eat</div><div class="vocab-meaning">食べる</div></div>
+    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao">nem</div><div class="vocab-meaning">ねる</div></div>
+    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao">sil</div><div class="vocab-meaning">見る</div></div>
+    <div class="vocab-item"><div class="vocab-cat">VERB</div><div class="vocab-faarao">kros</div><div class="vocab-meaning">超える</div></div>
+    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao">Sekai</div><div class="vocab-meaning">正解</div></div>
+    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao">Furai</div><div class="vocab-meaning">未来</div></div>
+    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao">Niga</div><div class="vocab-meaning">人間</div></div>
+    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao">Ogara</div><div class="vocab-meaning">大喜利</div></div>
+    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao">Sinki</div><div class="vocab-meaning">思考</div></div>
+    <div class="vocab-item"><div class="vocab-cat">NOUN</div><div class="vocab-faarao">Logis</div><div class="vocab-meaning">論理</div></div>
+  </div>
+
+  <div class="divider reveal">IT TERMS</div>
+  <div class="vocab-grid reveal">
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">Atofian-Interu</div><div class="vocab-meaning">AI（人工知能）</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">Taagzabi</div><div class="vocab-meaning">バイナリ</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">Kodu</div><div class="vocab-meaning">コード</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">Varis</div><div class="vocab-meaning">変数</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">Glic</div><div class="vocab-meaning">グリッチ</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">Prose</div><div class="vocab-meaning">処理</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">MKP</div><div class="vocab-meaning">CPU</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">BKP</div><div class="vocab-meaning">GPU</div></div>
+    <div class="vocab-item"><div class="vocab-cat">IT</div><div class="vocab-faarao">mitaki</div><div class="vocab-meaning">PC</div></div>
+  </div>
+
+  <div class="divider reveal">SCIENCE</div>
+  <div class="vocab-grid reveal">
+    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao">Kai</div><div class="vocab-meaning">原子</div></div>
+    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao">Mikai</div><div class="vocab-meaning">水素 (H)</div></div>
+    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao">Lasai</div><div class="vocab-meaning">ヘリウム (He)</div></div>
+    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao">Sekia</div><div class="vocab-meaning">炭素 (C)</div></div>
+    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao">Soheia</div><div class="vocab-meaning">窒素 (N)</div></div>
+    <div class="vocab-item"><div class="vocab-cat">SCIENCE</div><div class="vocab-faarao">Senkia</div><div class="vocab-meaning">酸素 (O)</div></div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">Faarai</span>
+  <p>Faarai Language — ONVA Project</p>
+  <p style="margin-top:0.4rem;">Artist R × ec2045</p>
+</footer>
+
+<script src="https://ec2045.github.io/Faairao/index.js"></script>
+<script>
+let engine;
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    if (typeof FaaraoEngine !== 'undefined') {
+      engine = new FaaraoEngine();
+      renderFaarao('Faarai');
+    }
+  }, 300);
+});
+
+function renderFaarao(text) {
+  const el = document.getElementById('faarao-output');
+  if (!el) return;
+  el.innerHTML = '';
+  document.getElementById('faarao-text-input').value = text;
+  if (engine) {
+    engine.render(text, 'faarao-output');
+  }
+}
+
+function renderFaaraoFromInput() {
+  const val = document.getElementById('faarao-text-input').value.trim();
+  if (val) renderFaarao(val);
+}
+
+document.getElementById('faarao-text-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') renderFaaraoFromInput();
+});
+
+// ヒーローのfaarao文字
+window.addEventListener('load', () => {
+  if (typeof FaaraoEngine !== 'undefined') {
+    const heroEl = document.querySelector('.hero-faarao .faarao');
+    if (heroEl) {
+      heroEl.id = 'hero-faarao-render';
+      engine = engine || new FaaraoEngine();
+      engine.render('Faarai', 'hero-faarao-render');
+    }
+  }
+});
+
+// スクロールリビール
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
