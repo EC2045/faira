@@ -1,686 +1,686 @@
 @font-face {
-      font-family: '2045alphabet';
-      src: url('https://ec2045.github.io/2045font/2045alphabet.otf') format('opentype');
-    }
-
-    :root {
-      --bg: #f4f4f8;
-      --bg2: #ffffff;
-      --bg3: #eaeaf0;
-      --accent: #3a8fb5;
-      --accent2: #b5763a;
-      --accent3: #7c3ab5;
-      --text: #1a1a2e;
-      --text-muted: #6b6b88;
-      --border: rgba(58, 143, 181, 0.18);
-      --serif: '2045alphabet', 'Noto Sans JP', sans-serif;
-      --body: 'Noto Sans JP', sans-serif;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--body);
-      font-weight: 300;
-      line-height: 1.75;
-      overflow-x: hidden;
-    }
-
-    /* ─── ノイズオーバーレイ ─── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ─── ヘッダー ─── */
-    header {
-      position: relative;
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 4rem 2rem;
-      overflow: hidden;
-    }
-
-    .hero-orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.22;
-      animation: pulse 8s ease-in-out infinite alternate;
-    }
-
-    .orb1 {
-      width: 500px;
-      height: 500px;
-      background: var(--accent3);
-      top: -100px;
-      left: -100px;
-    }
-
-    .orb2 {
-      width: 400px;
-      height: 400px;
-      background: var(--accent);
-      bottom: -100px;
-      right: -50px;
-      animation-delay: -4s;
-    }
-
-    .orb3 {
-      width: 300px;
-      height: 300px;
-      background: var(--accent2);
-      top: 40%;
-      left: 40%;
-      animation-delay: -2s;
-    }
-
-    @keyframes pulse {
-      from {
-        transform: scale(1) translate(0, 0);
-      }
-
-      to {
-        transform: scale(1.15) translate(20px, -20px);
-      }
-    }
-
-    .hero-label {
-      font-family: var(--serif);
-      font-size: clamp(0.65rem, 1.5vw, 0.8rem);
-      letter-spacing: 0.35em;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.2s forwards;
-    }
-
-    h1 {
-      font-family: var(--serif);
-      font-size: clamp(3.5rem, 12vw, 9rem);
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      line-height: 1;
-      position: relative;
-      z-index: 1;
-      background: linear-gradient(135deg, var(--text) 30%, var(--accent) 70%, var(--accent3) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      opacity: 0;
-      animation: fadeUp 1s ease 0.4s forwards;
-    }
-
-    .hero-sub {
-      margin-top: 1.5rem;
-      font-size: clamp(0.85rem, 2.5vw, 1.1rem);
-      color: var(--text-muted);
-      max-width: 480px;
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-      animation: fadeUp 1s ease 0.7s forwards;
-    }
-
-    .hero-faarao {
-      margin-top: 2.5rem;
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-      animation: fadeUp 1s ease 1s forwards;
-    }
-
-    .scroll-hint {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-muted);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      z-index: 1;
-      animation: scrollBounce 2s ease-in-out infinite;
-    }
-
-    .scroll-hint::after {
-      content: '';
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--accent), transparent);
-    }
-
-    @keyframes scrollBounce {
-
-      0%,
-      100% {
-        transform: translateX(-50%) translateY(0);
-      }
-
-      50% {
-        transform: translateX(-50%) translateY(6px);
-      }
-    }
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(24px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* ─── ナビ ─── */
-    nav {
-      position: fixed;
-      top: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 100;
-      display: flex;
-      gap: 1.5rem;
-      background: rgba(244, 244, 248, 0.80);
-      backdrop-filter: blur(12px);
-      border: 0.5px solid var(--border);
-      border-radius: 999px;
-      padding: 0.5rem 1.5rem;
-    }
-
-    nav a {
-      font-family: var(--serif);
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    nav a:hover {
-      color: var(--accent);
-    }
-
-    /* ─── セクション共通 ─── */
-    section {
-      position: relative;
-      padding: 6rem 2rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    section+section::before {
-      content: '';
-      display: block;
-      width: 1px;
-      height: 80px;
-      background: linear-gradient(to bottom, transparent, var(--border), transparent);
-      margin: 0 auto;
-      position: absolute;
-      top: 0;
-      left: 50%;
-    }
-
-    .section-tag {
-      font-family: var(--serif);
-      font-size: 0.65rem;
-      letter-spacing: 0.4em;
-      color: var(--accent);
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    h2 {
-      font-family: var(--serif);
-      font-size: clamp(1.8rem, 5vw, 3.2rem);
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      margin-bottom: 1.5rem;
-      background: linear-gradient(135deg, var(--text) 60%, var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    h3 {
-      font-family: var(--serif);
-      font-size: 1.1rem;
-      font-weight: 400;
-      color: var(--accent);
-      margin-bottom: 0.6rem;
-      letter-spacing: 0.05em;
-    }
-
-    p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      max-width: 680px;
-    }
-
-    p+p {
-      margin-top: 0.8rem;
-    }
-
-    /* ─── グリッド ─── */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
-
-    .card {
-      background: var(--bg2);
-      border: 0.5px solid var(--border);
-      border-radius: 16px;
-      padding: 1.8rem;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-
-    .card:hover {
-      border-color: rgba(126, 200, 227, 0.4);
-      transform: translateY(-3px);
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 20% 20%, rgba(126, 200, 227, 0.05), transparent 60%);
-      pointer-events: none;
-    }
-
-    .card-icon {
-      font-family: var(--serif);
-      font-size: 1.8rem;
-      color: var(--accent);
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    /* ─── コードブロック風 ─── */
-    .example-block {
-      background: var(--bg3);
-      border: 0.5px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem 1.8rem;
-      margin: 1.2rem 0;
-      position: relative;
-    }
-
-    .example-block::before {
-      content: attr(data-lang);
-      position: absolute;
-      top: -0.6em;
-      left: 1.2rem;
-      background: var(--bg3);
-      padding: 0 0.4em;
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      color: var(--accent);
-      font-family: var(--serif);
-    }
-
-    .example-label {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      letter-spacing: 0.15em;
-      margin-bottom: 0.5rem;
-      font-family: var(--serif);
-    }
-
-    .example-text {
-      font-family: var(--serif);
-      font-size: 1.15rem;
-      color: var(--text);
-      letter-spacing: 0.05em;
-    }
-
-    .example-trans {
-      font-size: 0.8rem;
-      color: var(--accent2);
-      margin-top: 0.4rem;
-    }
-
-    /* ─── テーブル ─── */
-    .table-wrap {
-      overflow-x: auto;
-      margin-top: 2rem;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-    }
-
-    th {
-      font-family: var(--serif);
-      font-weight: 400;
-      letter-spacing: 0.15em;
-      font-size: 0.7rem;
-      color: var(--accent);
-      border-bottom: 0.5px solid var(--border);
-      padding: 0.6rem 1rem;
-      text-align: left;
-    }
-
-    td {
-      padding: 0.6rem 1rem;
-      border-bottom: 0.5px solid rgba(126, 200, 227, 0.06);
-      color: var(--text-muted);
-    }
-
-    tr:hover td {
-      background: rgba(126, 200, 227, 0.03);
-    }
-
-    .td-faarao {
-      font-family: var(--serif);
-      color: var(--text);
-      font-size: 1rem;
-    }
-
-    /* ─── キカンホ説明ボックス ─── */
-    .kikanho-box {
-      background: linear-gradient(135deg, rgba(124, 58, 181, 0.07), rgba(58, 143, 181, 0.06));
-      border: 0.5px solid rgba(124, 58, 181, 0.25);
-      border-radius: 16px;
-      padding: 2rem;
-      margin: 2.5rem 0;
-      display: flex;
-      gap: 1.5rem;
-      align-items: flex-start;
-    }
-
-    .kikanho-symbol {
-      font-family: var(--serif);
-      font-size: 3rem;
-      color: var(--accent3);
-      flex-shrink: 0;
-      line-height: 1;
-    }
-
-    .kikanho-content h3 {
-      color: var(--accent3);
-    }
-
-    /* ─── ファーラオ文字デモ ─── */
-    .faarao-demo-area {
-      background: var(--bg2);
-      border: 0.5px solid var(--border);
-      border-radius: 16px;
-      padding: 2rem;
-      margin-top: 2rem;
-    }
-
-    .faarao-input-row {
-      display: flex;
-      gap: 0.8rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .faarao-input-row input {
-      flex: 1;
-      min-width: 200px;
-      background: var(--bg3);
-      border: 0.5px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      padding: 0.6rem 1rem;
-      font-family: var(--body);
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .faarao-input-row input:focus {
-      border-color: var(--accent);
-    }
-
-    .faarao-input-row button {
-      background: rgba(126, 200, 227, 0.12);
-      border: 0.5px solid rgba(126, 200, 227, 0.3);
-      border-radius: 8px;
-      color: var(--accent);
-      padding: 0.6rem 1.4rem;
-      cursor: pointer;
-      font-family: var(--serif);
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      transition: background 0.2s;
-    }
-
-    .faarao-input-row button:hover {
-      background: rgba(126, 200, 227, 0.22);
-    }
-
-    #faarao-output {
-      min-height: 100px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .faarao-preset-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .preset-btn {
-      background: var(--bg3);
-      border: 0.5px solid var(--border);
-      border-radius: 8px;
-      color: var(--text-muted);
-      padding: 0.35rem 0.9rem;
-      cursor: pointer;
-      font-family: var(--serif);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      transition: all 0.2s;
-    }
-
-    .preset-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* ─── 語彙テーブル ─── */
-    .vocab-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 0.8rem;
-      margin-top: 2rem;
-    }
-
-    .vocab-item {
-      background: var(--bg2);
-      border: 0.5px solid var(--border);
-      border-radius: 10px;
-      padding: 0.8rem 1rem;
-      transition: all 0.2s;
-    }
-
-    .vocab-item:hover {
-      border-color: rgba(126, 200, 227, 0.35);
-      background: var(--bg3);
-    }
-
-    .vocab-faarao {
-      font-family: var(--serif);
-      font-size: 1rem;
-      color: var(--text);
-    }
-
-    .vocab-meaning {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 0.2rem;
-    }
-
-    .vocab-cat {
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      color: var(--accent);
-      font-family: var(--serif);
-      margin-bottom: 0.2rem;
-    }
-
-    .vi-render {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      min-height: 70px;
-      margin: 0.4rem 0 0.2rem;
-      transform: scale(0.72);
-      transform-origin: left center;
-    }
-
-    .ex-faarao-label {
-      font-size: 0.6rem;
-      letter-spacing: 0.25em;
-      font-family: var(--serif);
-      color: var(--text-muted);
-      margin-top: 0.9rem;
-      margin-bottom: 0.2rem;
-    }
-
-    .ex-faarao-render {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      min-height: 80px;
-      transform: scale(0.78);
-      transform-origin: left center;
-    }
-
-    /* ─── フッター ─── */
-    footer {
-      text-align: center;
-      padding: 4rem 2rem;
-      border-top: 0.5px solid var(--border);
-      color: var(--text-muted);
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-    }
-
-    footer .footer-logo {
-      font-family: var(--serif);
-      font-size: 2rem;
-      color: var(--accent);
-      display: block;
-      margin-bottom: 1rem;
-    }
-
-    /* ─── アクセント区切り ─── */
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin: 3rem 0;
-      color: var(--text-muted);
-      font-family: var(--serif);
-      font-size: 0.7rem;
-      letter-spacing: 0.3em;
-    }
-
-    .divider::before,
-    .divider::after {
-      content: '';
-      flex: 1;
-      height: 0.5px;
-      background: var(--border);
-    }
-
-    /* ─── スクロールアニメ ─── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: none;
-    }
-
-    /* ─── 数字表示 ─── */
-    .number-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 0.8rem;
-      margin-top: 1.5rem;
-    }
-
-    .number-item {
-      background: var(--bg2);
-      border: 0.5px solid var(--border);
-      border-radius: 10px;
-      padding: 0.8rem;
-      text-align: center;
-    }
-
-    .number-val {
-      font-family: var(--serif);
-      font-size: 1.4rem;
-      color: var(--accent2);
-    }
-
-    .number-read {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 0.2rem;
-    }
-
-    /* ─── コンジャンクション表 ─── */
-    .conj-row {
-      display: flex;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-      margin-top: 1rem;
-    }
-
-    .conj-pill {
-      background: var(--bg3);
-      border: 0.5px solid var(--border);
-      border-radius: 999px;
-      padding: 0.3rem 0.9rem;
-      font-size: 0.8rem;
-    }
-
-    .conj-pill strong {
-      font-family: var(--serif);
-      color: var(--accent3);
-      font-weight: 400;
-    }
-
-    .conj-pill span {
-      color: var(--text-muted);
-      margin-left: 0.4rem;
-    }
+  font-family: '2045alphabet';
+  src: url('https://ec2045.github.io/2045font/2045alphabet.otf') format('opentype');
+}
+
+:root {
+  --bg: #f4f4f8;
+  --bg2: #ffffff;
+  --bg3: #eaeaf0;
+  --accent: #3a8fb5;
+  --accent2: #b5763a;
+  --accent3: #7c3ab5;
+  --text: #1a1a2e;
+  --text-muted: #6b6b88;
+  --border: rgba(58, 143, 181, 0.18);
+  --serif: '2045alphabet', 'Noto Sans JP', sans-serif;
+  --body: 'Noto Sans JP', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-weight: 300;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+/* ─── ノイズオーバーレイ ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── ヘッダー ─── */
+header {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  overflow: hidden;
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.22;
+  animation: pulse 8s ease-in-out infinite alternate;
+}
+
+.orb1 {
+  width: 500px;
+  height: 500px;
+  background: var(--accent3);
+  top: -100px;
+  left: -100px;
+}
+
+.orb2 {
+  width: 400px;
+  height: 400px;
+  background: var(--accent);
+  bottom: -100px;
+  right: -50px;
+  animation-delay: -4s;
+}
+
+.orb3 {
+  width: 300px;
+  height: 300px;
+  background: var(--accent2);
+  top: 40%;
+  left: 40%;
+  animation-delay: -2s;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1) translate(0, 0);
+  }
+
+  to {
+    transform: scale(1.15) translate(20px, -20px);
+  }
+}
+
+.hero-label {
+  font-family: var(--serif);
+  font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+  letter-spacing: 0.35em;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.2s forwards;
+}
+
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 12vw, 9rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(135deg, var(--text) 30%, var(--accent) 70%, var(--accent3) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.4s forwards;
+}
+
+.hero-sub {
+  margin-top: 1.5rem;
+  font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+  color: var(--text-muted);
+  max-width: 480px;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.7s forwards;
+}
+
+.hero-faarao {
+  margin-top: 2.5rem;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 1s ease 1s forwards;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  z-index: 1;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+.scroll-hint::after {
+  content: '';
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+}
+
+@keyframes scrollBounce {
+
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(6px);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── ナビ ─── */
+nav {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  gap: 1.5rem;
+  background: rgba(244, 244, 248, 0.80);
+  backdrop-filter: blur(12px);
+  border: 0.5px solid var(--border);
+  border-radius: 999px;
+  padding: 0.5rem 1.5rem;
+}
+
+nav a {
+  font-family: var(--serif);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+/* ─── セクション共通 ─── */
+section {
+  position: relative;
+  padding: 6rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+section+section::before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--border), transparent);
+  margin: 0 auto;
+  position: absolute;
+  top: 0;
+  left: 50%;
+}
+
+.section-tag {
+  font-family: var(--serif);
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, var(--text) 60%, var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h3 {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.05em;
+}
+
+p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  max-width: 680px;
+}
+
+p+p {
+  margin-top: 0.8rem;
+}
+
+/* ─── グリッド ─── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.card {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  padding: 1.8rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.card:hover {
+  border-color: rgba(126, 200, 227, 0.4);
+  transform: translateY(-3px);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(126, 200, 227, 0.05), transparent 60%);
+  pointer-events: none;
+}
+
+.card-icon {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* ─── コードブロック風 ─── */
+.example-block {
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.8rem;
+  margin: 1.2rem 0;
+  position: relative;
+}
+
+.example-block::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: -0.6em;
+  left: 1.2rem;
+  background: var(--bg3);
+  padding: 0 0.4em;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  font-family: var(--serif);
+}
+
+.example-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5rem;
+  font-family: var(--serif);
+}
+
+.example-text {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--text);
+  letter-spacing: 0.05em;
+}
+
+.example-trans {
+  font-size: 0.8rem;
+  color: var(--accent2);
+  margin-top: 0.4rem;
+}
+
+/* ─── テーブル ─── */
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 2rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+th {
+  font-family: var(--serif);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  font-size: 0.7rem;
+  color: var(--accent);
+  border-bottom: 0.5px solid var(--border);
+  padding: 0.6rem 1rem;
+  text-align: left;
+}
+
+td {
+  padding: 0.6rem 1rem;
+  border-bottom: 0.5px solid rgba(126, 200, 227, 0.06);
+  color: var(--text-muted);
+}
+
+tr:hover td {
+  background: rgba(126, 200, 227, 0.03);
+}
+
+.td-faarao {
+  font-family: var(--serif);
+  color: var(--text);
+  font-size: 1rem;
+}
+
+/* ─── キカンホ説明ボックス ─── */
+.kikanho-box {
+  background: linear-gradient(135deg, rgba(124, 58, 181, 0.07), rgba(58, 143, 181, 0.06));
+  border: 0.5px solid rgba(124, 58, 181, 0.25);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2.5rem 0;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.kikanho-symbol {
+  font-family: var(--serif);
+  font-size: 3rem;
+  color: var(--accent3);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.kikanho-content h3 {
+  color: var(--accent3);
+}
+
+/* ─── ファーラオ文字デモ ─── */
+.faarao-demo-area {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.faarao-input-row {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.faarao-input-row input {
+  flex: 1;
+  min-width: 200px;
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 0.6rem 1rem;
+  font-family: var(--body);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.faarao-input-row input:focus {
+  border-color: var(--accent);
+}
+
+.faarao-input-row button {
+  background: rgba(126, 200, 227, 0.12);
+  border: 0.5px solid rgba(126, 200, 227, 0.3);
+  border-radius: 8px;
+  color: var(--accent);
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+  font-family: var(--serif);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  transition: background 0.2s;
+}
+
+.faarao-input-row button:hover {
+  background: rgba(126, 200, 227, 0.22);
+}
+
+#faarao-output {
+  min-height: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.faarao-preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.preset-btn {
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+  font-family: var(--serif);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+}
+
+.preset-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ─── 語彙テーブル ─── */
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.vocab-item {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  transition: all 0.2s;
+}
+
+.vocab-item:hover {
+  border-color: rgba(126, 200, 227, 0.35);
+  background: var(--bg3);
+}
+
+.vocab-faarao {
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.vocab-meaning {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.vocab-cat {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  font-family: var(--serif);
+  margin-bottom: 0.2rem;
+}
+
+.vi-render {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 70px;
+  margin: 0.4rem 0 0.2rem;
+  transform: scale(0.72);
+  transform-origin: left center;
+}
+
+.ex-faarao-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  font-family: var(--serif);
+  color: var(--text-muted);
+  margin-top: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+
+.ex-faarao-render {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 80px;
+  transform: scale(0.78);
+  transform-origin: left center;
+}
+
+/* ─── フッター ─── */
+footer {
+  text-align: center;
+  padding: 4rem 2rem;
+  border-top: 0.5px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+footer .footer-logo {
+  font-family: var(--serif);
+  font-size: 2rem;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* ─── アクセント区切り ─── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 3rem 0;
+  color: var(--text-muted);
+  font-family: var(--serif);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 0.5px;
+  background: var(--border);
+}
+
+/* ─── スクロールアニメ ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── 数字表示 ─── */
+.number-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+.number-item {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem;
+  text-align: center;
+}
+
+.number-val {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  color: var(--accent2);
+}
+
+.number-read {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+/* ─── コンジャンクション表 ─── */
+.conj-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.conj-pill {
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.8rem;
+}
+
+.conj-pill strong {
+  font-family: var(--serif);
+  color: var(--accent3);
+  font-weight: 400;
+}
+
+.conj-pill span {
+  color: var(--text-muted);
+  margin-left: 0.4rem;
+}
