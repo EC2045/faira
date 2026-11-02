@@ -13,7 +13,7 @@
   --text: #1a1a2e;
   --text-muted: #6b6b88;
   --border: rgba(58, 143, 181, 0.18);
-  --serif: '2045alphabet', 'Noto Sans JP', sans-serif;
+  --serif: 'Noto Serif JP', 'Yu Mincho', Georgia, serif;
   --body: 'Noto Sans JP', sans-serif;
 }
 
